@@ -10,5 +10,6 @@
 
 ### Полезные ссылки
 * [NextPizza / Разработка FullStack интернет-магазина (клон ДодоПиццы) [NextJS, TS, Prisma, NextAuth]](https://youtu.be/GUwizGbY4cc)
+* [tailwindcss](https://tailwindcss.com/)
 * [ui.shadcn.com](https://ui.shadcn.com/examples/playground)
 * [lucide.dev](https://lucide.dev/icons/)
