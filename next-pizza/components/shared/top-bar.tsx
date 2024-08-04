@@ -13,7 +13,7 @@ export const TopBar: React.FC<Props> = ({ categories, className }) => {
     return (
         <div className={cn(
             'sticky top-0 bg-white py-5 z-10',
-            false && 'shadow-lg shadow-black/5', // TODO: добавить условие при котором будем отображать тень
+            true && 'shadow-lg shadow-black/5', // TODO: добавить условие при котором будем отображать тень
             className
         )}>
             <Container className="flex items-center justify-between ">
