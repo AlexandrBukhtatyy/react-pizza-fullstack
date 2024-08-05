@@ -5,11 +5,10 @@ import {SortPopup} from '@/components/shared/sort-popup';
 import {Container} from '@/components/shared/container';
 
 interface Props {
-    categories: any[]; // TODO: добавить интерфейс
     className?: string;
 }
 
-export const TopBar: React.FC<Props> = ({ categories, className }) => {
+export const TopBar: React.FC<Props> = ({ className }) => {
     return (
         <div className={cn(
             'sticky top-0 bg-white py-5 z-10',
@@ -17,7 +16,7 @@ export const TopBar: React.FC<Props> = ({ categories, className }) => {
             className
         )}>
             <Container className="flex items-center justify-between ">
-                <Categories items={categories} />
+                <Categories />
                 <SortPopup />
             </Container>
         </div>

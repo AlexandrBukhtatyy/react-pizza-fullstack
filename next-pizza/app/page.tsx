@@ -22,7 +22,7 @@ export default function Home() {
                     {/* Список продуктов */}
                     <div className="flex-1">
                         <div className="flex flex-col gap-16">
-                            <ProductsGroupList title="Пиццы" categoryId="1" items={[
+                            <ProductsGroupList title="Пиццы" categoryId={1} items={[
                                 {
                                     id: '1',
                                     name: 'Додо пицца 1',
@@ -66,7 +66,7 @@ export default function Home() {
                                     imageUrl: 'https://media.dodostatic.net/image/r:584x584/11EEFB595A197C24BA932A0AD1144AFB.avif',
                                 }
                             ]}/>
-                            <ProductsGroupList title="Комбо" categoryId="2"  items={[
+                            <ProductsGroupList title="Комбо" categoryId={2}  items={[
                                 {
                                     id: '1',
                                     name: 'Додо пицца',
@@ -110,7 +110,7 @@ export default function Home() {
                                     imageUrl: 'https://media.dodostatic.net/image/r:584x584/11EEFB595A197C24BA932A0AD1144AFB.avif',
                                 }
                             ]}/>
-                            <ProductsGroupList title="Закуски" categoryId="3"  items={[
+                            <ProductsGroupList title="Закуски" categoryId={3}  items={[
                                 {
                                     id: '1',
                                     name: 'Додо пицца',
