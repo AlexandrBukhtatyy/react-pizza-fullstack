@@ -18,3 +18,5 @@
 * [nextjs.org](https://nextjs.org/)
 * [vercel.com](https://vercel.com/)
 * [prisma.io](https://www.prisma.io/)
+* [prisma-orm](https://plugins.jetbrains.com/plugin/20686-prisma-orm)
+* [postman.com](https://www.postman.com/)
