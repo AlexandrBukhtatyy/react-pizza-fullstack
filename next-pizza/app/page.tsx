@@ -11,7 +11,7 @@ export default function Home() {
                 <Title text="Все пиццы" size="lg" className="font-extrabold"></Title>
             </Container>
 
-            <TopBar></TopBar>
+            <TopBar/>
 
             <Container className="pt-10 pb-14">
                 <div className="flex gap-[80px]">
@@ -66,7 +66,7 @@ export default function Home() {
                                     imageUrl: 'https://media.dodostatic.net/image/r:584x584/11EEFB595A197C24BA932A0AD1144AFB.avif',
                                 }
                             ]}/>
-                            <ProductsGroupList title="Завтраки" categoryId="2"  items={[
+                            <ProductsGroupList title="Комбо" categoryId="2"  items={[
                                 {
                                     id: '1',
                                     name: 'Додо пицца',
@@ -110,7 +110,7 @@ export default function Home() {
                                     imageUrl: 'https://media.dodostatic.net/image/r:584x584/11EEFB595A197C24BA932A0AD1144AFB.avif',
                                 }
                             ]}/>
-                            <ProductsGroupList title="Комбо" categoryId="3"  items={[
+                            <ProductsGroupList title="Закуски" categoryId="3"  items={[
                                 {
                                     id: '1',
                                     name: 'Додо пицца',
