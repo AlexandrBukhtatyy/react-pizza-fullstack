@@ -9,7 +9,6 @@
     "lint": "next lint",
     "prisma:push": "prisma db push",
     "prisma:client": "prisma studio"
-
   },
   "dependencies": {
     "@prisma/client": "^5.17.0",
