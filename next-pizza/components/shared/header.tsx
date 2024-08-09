@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import {Button} from '@/components/ui/button';
 import {ArrowRight, ShoppingCart, User} from 'lucide-react';
+import {SearchInput} from '@/components/shared/search-input';
 
 interface Props {
     hasSearch?: boolean;
@@ -28,6 +29,12 @@ export const Header: React.FC<Props> = ({className}) => {
                             </div>
                         </div>
                     </Link>
+
+                    {/* Поиск */}
+                    <div className='mx-10 flex-1'>
+                        <SearchInput/>
+                    </div>
+
 
                     {/* Правая часть */}
                     <div className="flex items-center gap-3">
