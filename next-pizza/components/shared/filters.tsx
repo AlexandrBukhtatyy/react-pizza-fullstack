@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import {Title} from '@/components/shared/title';
 import {FilterCheckbox} from '@/components/shared/filter-checkbox';
@@ -7,18 +9,22 @@ import {RangeSlider} from '@/components/shared/range-slider';
 import {CheckboxFiltersGroup} from '@/components/shared/checkbox-filters-group';
 import {RadioGroup, RadioGroupItem} from '@/components/ui/radio-group';
 import {Label} from '@/components/ui/label';
+import {useFilterIngredients} from '@/hooks/use-FilterIngredients';
 
 interface Props {
     className?: string;
 }
 
 export const Filters: React.FC<React.PropsWithChildren<Props>> = ({className}) => {
+    const {ingredients, loading, selectedIds, onAddId} = useFilterIngredients();
+    const items = ingredients.map(i => ({text: i.name, value: String(i.id)}));
+
     return (
         <div className={className}>
             <Title text="Фильтрация" className="mb-5 font-bold"/>
             <div className="flex flex-col gap-4">
-                <FilterCheckbox text="Можно собирать" value="1"/>
-                <FilterCheckbox text="Новинки" value="2"/>
+                <FilterCheckbox name="editable" text="Можно собирать" value="1"/>
+                <FilterCheckbox name="isNew" text="Новинки" value="2"/>
             </div>
 
             <div className="mt-5 border-t border-y-neutral-100 py-6 pb-7">
@@ -34,24 +40,14 @@ export const Filters: React.FC<React.PropsWithChildren<Props>> = ({className}) =
                 <p className="font-bold mb-3">Ингредиенты:</p>
                 <CheckboxFiltersGroup
                     className="mt-5"
+                    name="ingredients"
                     searchInputPlaceholder={'Поиск...'}
                     limit={5}
-                    items={[
-                        {text: 'Сырный соус', value: '1'},
-                        {text: 'Моцарелла', value: '2'},
-                        {text: 'Чеснок', value: '3'},
-                        {text: 'Солённые огурчики', value: '4'},
-                        {text: 'Красный лук', value: '5'},
-                        {text: 'Томаты', value: '6'}
-                    ]}
-                    defaultItems={[
-                        {text: 'Сырный соус', value: '1'},
-                        {text: 'Моцарелла', value: '2'},
-                        {text: 'Чеснок', value: '3'},
-                        {text: 'Солённые огурчики', value: '4'},
-                        {text: 'Красный лук', value: '5'},
-                        {text: 'Томаты', value: '6'}
-                    ]}
+                    items={items}
+                    defaultItems={items}
+                    loading={loading}
+                    onClickCheckbox={onAddId}
+                    selectedIds={selectedIds}
                 />
             </div>
 
@@ -59,11 +55,11 @@ export const Filters: React.FC<React.PropsWithChildren<Props>> = ({className}) =
                 <p className="font-bold mb-3">Тип теста:</p>
                 <RadioGroup defaultValue="comfortable">
                     <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="traditional" id="r1" />
+                        <RadioGroupItem value="traditional" id="r1"/>
                         <Label htmlFor="r1">Традиционное</Label>
                     </div>
                     <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="tiny" id="r2" />
+                        <RadioGroupItem value="tiny" id="r2"/>
                         <Label htmlFor="r2">Тонкое</Label>
                     </div>
                 </RadioGroup>

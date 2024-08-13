@@ -16,10 +16,14 @@ export function SearchInput() {
     useClickAway(ref, () => {
         setFocused(false);
     });
-    useDebounce(() => {
-        Api.products.search(searchQuery).then((products) => {
-            setProducts(products);
-        })
+    useDebounce(async () => {
+        try {
+            Api.products.search(searchQuery).then((products) => {
+                setProducts(products);
+            })
+        } catch (error) {
+            console.log(error);
+        }
     }, 100, [searchQuery])
 
     function onClickItem() {

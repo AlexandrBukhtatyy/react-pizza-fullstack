@@ -3,6 +3,8 @@
 import React from 'react';
 import {FilterChecboxProps, FilterCheckbox} from '@/components/shared/filter-checkbox';
 import {Input} from '@/components/ui/input';
+import {Skeleton} from '@/components/ui/skeleton';
+import {useSet} from 'react-use';
 
 interface Props {
     items: FilterChecboxProps[];
@@ -10,6 +12,10 @@ interface Props {
     limit: number;
     searchInputPlaceholder?: string;
     defaultValue?: FilterChecboxProps[];
+    loading?: boolean;
+    selectedIds?: Set<string>;
+    onClickCheckbox: (id: string) => void;
+    name: string;
     className?: string;
 }
 
@@ -19,6 +25,10 @@ export const CheckboxFiltersGroup: React.FC<React.PropsWithChildren<Props>> = ({
     limit = 5,
     searchInputPlaceholder,
     defaultValue,
+    loading,
+    selectedIds,
+    onClickCheckbox,
+    name,
     className
 }) => {
     const [showAll, setShowAll] = React.useState(false);
@@ -30,6 +40,19 @@ export const CheckboxFiltersGroup: React.FC<React.PropsWithChildren<Props>> = ({
 
     const onChangeSearchInput = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearchValue(event.target.value);
+    }
+
+    if (loading) {
+        return(
+            <div className={className}>
+                {
+                 ...Array(limit)
+                     .fill(null)
+                     .map((_, index) => (<Skeleton key={index} className="h-6 mb-4 rounded-[8px]"/>))
+                }
+                <Skeleton className="w-28 h-6 mb-4 rounded-[8px]"/>
+            </div>
+        )
     }
 
     return (
@@ -45,10 +68,11 @@ export const CheckboxFiltersGroup: React.FC<React.PropsWithChildren<Props>> = ({
                         <FilterCheckbox
                             key={index}
                             text={item.text}
+                            name={name}
                             value={item.value}
                             endAdornment={item.endAdornment}
-                            checked={false}
-                            onCheckedChange={(ids) => console.log(ids)}
+                            checked={selectedIds?.has(item.value)}
+                            onCheckedChange={() => onClickCheckbox?.(item.value)}
                         />
                     ))
                 }
