@@ -12,7 +12,8 @@ import {Label} from '@/components/ui/label';
 import {useFilterIngredients} from '@/hooks/use-FilterIngredients';
 import {useSet} from 'react-use';
 import qs from 'qs';
-import {useRouter} from 'next/navigation';
+import {useRouter, useSearchParams} from 'next/navigation';
+import * as sea from 'node:sea';
 
 interface Props {
     className?: string;
@@ -23,15 +24,35 @@ interface PriceProps {
     priceTo?: number;
 }
 
+interface QueryFilters extends PriceProps {
+    editable: boolean;
+    isNew: boolean;
+    pizzaTypes: string[];
+    sizes: string[];
+    ingredients: string[];
+}
+
 export const Filters: React.FC<React.PropsWithChildren<Props>> = ({className}) => {
     const router = useRouter();
-    const [editable, setEditable] = React.useState<boolean>(false);
-    const [isNew, setIsNew] = React.useState<boolean>(false);
-    const {ingredients, loading, selectedIds, onAddId} = useFilterIngredients();
-    const [pizzaSizes, { toggle: toggleSizes }] = useSet(new Set<string>([]));
-    const [pizzaTypes, { toggle: togglePizzaTypes }] = useSet(new Set<string>([]));
+    const searchParams = useSearchParams() as unknown as Map<keyof QueryFilters, string>;
+    const [editable, setEditable] = React.useState<boolean>(searchParams.get('editable') === 'true');
+    const [isNew, setIsNew] = React.useState<boolean>(searchParams.get('isNew') === 'true');
+    const {ingredients, loading, selectedIds, onAddId} = useFilterIngredients(searchParams.get('ingredients')?.split(','));
+
+    const [pizzaSizes, { toggle: toggleSizes }] = useSet(
+        new Set<string>(searchParams.has('sizes') ? searchParams.get('sizes')?.split(',') : [])
+    );
+
+    const [pizzaTypes, { toggle: togglePizzaTypes }] = useSet(new Set<string>(
+        new Set<string>(searchParams.has('pizzaTypes') ? searchParams.get('pizzaTypes')?.split(',') : [])
+    ));
+
     const items = ingredients.map(i => ({text: i.name, value: String(i.id)}));
-    const [prices, setPrice] = React.useState<PriceProps>({});
+
+    const [prices, setPrice] = React.useState<PriceProps>({
+        priceFrom: Number(searchParams.get('priceFrom')) || undefined,
+        priceTo: Number(searchParams.get('priceTo')) || undefined
+    });
     const updatePrice = (name: keyof PriceProps, value: number) => {
         setPrice({
             ...prices,
@@ -46,7 +67,7 @@ export const Filters: React.FC<React.PropsWithChildren<Props>> = ({className}) =
             editable,
             pizzaTypes: Array.from(pizzaTypes),
             pizzaSizes: Array.from(pizzaSizes),
-            selectedIds: Array.from(selectedIds)
+            ingredients: Array.from(selectedIds)
         };
         const query = qs.stringify(filters, {
             arrayFormat: 'comma'
