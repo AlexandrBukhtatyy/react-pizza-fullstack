@@ -11,26 +11,27 @@ import {RadioGroup, RadioGroupItem} from '@/components/ui/radio-group';
 import {Label} from '@/components/ui/label';
 import {useFilterIngredients} from '@/hooks/use-FilterIngredients';
 import {useSet} from 'react-use';
+import qs from 'qs';
+import {useRouter} from 'next/navigation';
 
 interface Props {
     className?: string;
 }
 
 interface PriceProps {
-    priceFrom: number;
-    priceTo: number;
+    priceFrom?: number;
+    priceTo?: number;
 }
 
 export const Filters: React.FC<React.PropsWithChildren<Props>> = ({className}) => {
+    const router = useRouter();
     const [editable, setEditable] = React.useState<boolean>(false);
     const [isNew, setIsNew] = React.useState<boolean>(false);
     const {ingredients, loading, selectedIds, onAddId} = useFilterIngredients();
     const [pizzaSizes, { toggle: toggleSizes }] = useSet(new Set<string>([]));
     const [pizzaTypes, { toggle: togglePizzaTypes }] = useSet(new Set<string>([]));
     const items = ingredients.map(i => ({text: i.name, value: String(i.id)}));
-    const [prices, setPrice] = React.useState<PriceProps>({
-        priceFrom: 0, priceTo: 1000
-    });
+    const [prices, setPrice] = React.useState<PriceProps>({});
     const updatePrice = (name: keyof PriceProps, value: number) => {
         setPrice({
             ...prices,
@@ -47,7 +48,12 @@ export const Filters: React.FC<React.PropsWithChildren<Props>> = ({className}) =
             pizzaSizes: Array.from(pizzaSizes),
             selectedIds: Array.from(selectedIds)
         };
-        console.log(filters);
+        const query = qs.stringify(filters, {
+            arrayFormat: 'comma'
+        });
+
+        router.push(`?${query}`, { scroll: false });
+
     }, [editable, isNew, prices, pizzaTypes, pizzaSizes, selectedIds])
 
     return (
@@ -100,14 +106,14 @@ export const Filters: React.FC<React.PropsWithChildren<Props>> = ({className}) =
                 <p className="font-bold mb-3">Цена от и до</p>
                 <div className="flex gap-3 mb-5">
                     <Input type="number" min={0} max={1000} placeholder="0"
-                           value={String(prices.priceFrom)}
+                           value={String(prices.priceFrom) || '0'}
                            onChange={(price) => updatePrice('priceFrom', Number(price.target.value))}/>
                     <Input type="number" min={100} max={1000} placeholder="1000"
-                           value={String(prices.priceTo)}
+                           value={String(prices.priceTo) || '1000'}
                            onChange={(price) => updatePrice('priceTo', Number(price.target.value))}/>
                 </div>
                 <RangeSlider min={0} max={1000} step={10}
-                             value={[Number(prices.priceFrom), Number(prices.priceTo)]}
+                             value={[Number(prices.priceFrom) || 0, Number(prices.priceTo) || 1000]}
                              onValueChange={([priceFrom, priceTo]) => setPrice({
                                  priceFrom: Number(priceFrom),
                                  priceTo: Number(priceTo)
