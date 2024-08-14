@@ -8,12 +8,12 @@ import {useSet} from 'react-use';
 
 interface Props {
     items: FilterChecboxProps[];
-    defaultItems: FilterChecboxProps[];
-    limit: number;
+    defaultItems?: FilterChecboxProps[];
+    limit?: number;
     searchInputPlaceholder?: string;
     defaultValue?: FilterChecboxProps[];
     loading?: boolean;
-    selectedIds?: Set<string>;
+    selectedValues?: Set<string>;
     onClickCheckbox: (id: string) => void;
     name: string;
     className?: string;
@@ -26,7 +26,7 @@ export const CheckboxFiltersGroup: React.FC<React.PropsWithChildren<Props>> = ({
     searchInputPlaceholder,
     defaultValue,
     loading,
-    selectedIds,
+    selectedValues,
     onClickCheckbox,
     name,
     className
@@ -36,7 +36,7 @@ export const CheckboxFiltersGroup: React.FC<React.PropsWithChildren<Props>> = ({
 
     const list = showAll
         ? items.filter((item) => item.text.toLowerCase().includes(searchValue.toLowerCase()))
-        : defaultItems.slice(0, limit);
+        : (defaultItems || items).slice(0, limit);
 
     const onChangeSearchInput = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearchValue(event.target.value);
@@ -71,7 +71,7 @@ export const CheckboxFiltersGroup: React.FC<React.PropsWithChildren<Props>> = ({
                             name={name}
                             value={item.value}
                             endAdornment={item.endAdornment}
-                            checked={selectedIds?.has(item.value)}
+                            checked={selectedValues?.has(item.value)}
                             onCheckedChange={() => onClickCheckbox?.(item.value)}
                         />
                     ))

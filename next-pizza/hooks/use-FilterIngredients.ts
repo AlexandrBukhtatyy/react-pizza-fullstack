@@ -14,7 +14,7 @@ export interface ReturnProps {
 
 export const useFilterIngredients = (): ReturnProps => {
     const [ingredients, setIngredients] = React.useState<Ingredient[]>([]);
-    const [loading, setLoading] = React.useState<Boolean>(true);
+    const [loading, setLoading] = React.useState<boolean>(true);
     const [selectedIds, { toggle }] = useSet(new Set<string>([]));
 
     React.useEffect(() => {
