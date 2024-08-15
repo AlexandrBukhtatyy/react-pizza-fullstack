@@ -36,7 +36,7 @@ export const ProductsGroupList: React.FC<React.PropsWithChildren<Props>> = ({
 
 
     return (
-        <div id={title} className={className} ref={intersectionRef}>
+        <div id={String(categoryId)} className={className} ref={intersectionRef}>
             <Title text={title} size="lg" className="font-extrabold mb-5"/>
             <div className={cn('grid grid-cols-3 gap-[50px]', listClassName)}>
                 {
