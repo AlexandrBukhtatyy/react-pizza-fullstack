@@ -1,9 +1,7 @@
 import {prisma} from '@/prisma/prisma-client';
 import {notFound} from 'next/navigation';
-import {Container} from '@/components/shared/container';
-import {ProductImage} from '@/components/shared/product-image';
-import {Title} from '@/components/shared/title';
-import {ToggleGroup} from '@/components/shared/toggle-group';
+import {Container, ProductImage, Title} from '@/shared/components/shared';
+import {ToggleGroup} from '@/shared/components/shared/toggle-group';
 
 export default async function ProductPage({params: {id}}: { params: { id: string } }) {
 

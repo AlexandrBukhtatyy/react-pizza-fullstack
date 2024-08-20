@@ -1,9 +1,6 @@
-import {Title} from '@/components/shared/title';
-import {Container} from '@/components/shared/container';
-import {TopBar} from '@/components/shared/top-bar';
-import {Filters} from '@/components/shared/filters';
-import {ProductsGroupList} from '@/components/shared/products-group-list';
 import {prisma} from '@/prisma/prisma-client';
+import {Container, Filters, Title, TopBar} from '@/shared/components/shared';
+import {ProductsGroupList} from '@/shared/components/shared/products-group-list';
 
 export default async function Home() {
     const categories = await prisma.category.findMany({

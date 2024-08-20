@@ -1,6 +1,6 @@
 import React from 'react';
 import {Ingredient} from '@prisma/client';
-import {Api} from '@/services/api-clients';
+import {Api} from '@/shared/services/api-clients';
 
 export const useIngerdients = () => {
     const [loading, setLoading] = React.useState<boolean>(true);
