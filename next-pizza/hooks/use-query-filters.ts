@@ -9,8 +9,9 @@ export const useQueryFilters = (filters: Filters) => {
     React.useEffect(() => {
         const params = {
             ...filters.prices,
-            isNew: filters.isNew,
-            editable: filters.editable,
+            // TODO: Фильтры почемуто ломают верстку приложения и вообще роутинг
+            // isNew: filters.isNew,
+            // editable: filters.editable,
             pizzaTypes: Array.from(filters.pizzaTypes),
             pizzaSizes: Array.from(filters.sizes),
             ingredients: Array.from(filters.selectedIngredients)

@@ -15,7 +15,7 @@ export default function MainLayout({
     return (
         <html lang="en">
             <body className={nunito.className}>
-            {children}
+                {children}
             </body>
         </html>
     );
