@@ -15,6 +15,7 @@ export const useQueryFilters = (filters: Filters) => {
             pizzaSizes: Array.from(filters.sizes),
             ingredients: Array.from(filters.selectedIngredients)
         };
+
         const query = qs.stringify(params, {
             arrayFormat: 'comma'
         });

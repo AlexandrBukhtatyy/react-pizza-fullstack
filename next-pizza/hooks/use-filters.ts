@@ -37,9 +37,9 @@ interface ReturnProps extends Filters {
 export const useFilters = (): ReturnProps => {
     const searchParams = useSearchParams() as unknown as Map<keyof QueryFilters, string>;
 
-    const [editable, setEditable] = React.useState<boolean>(searchParams.get('editable') === 'true');
+    const [editable, setEditable] = React.useState<boolean>(Boolean(searchParams.get('editable')));
 
-    const [isNew, setIsNew] = React.useState<boolean>(searchParams.get('isNew') === 'true');
+    const [isNew, setIsNew] = React.useState<boolean>(Boolean(searchParams.get('isNew')));
 
     const [selectedIngredients, {toggle: toggleIngredients}] = useSet(
         new Set<string>(searchParams.get('ingredients')?.split(','))
