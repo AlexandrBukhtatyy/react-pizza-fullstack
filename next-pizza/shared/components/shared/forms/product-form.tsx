@@ -1,6 +1,6 @@
 import {cn} from '@/shared/lib/utils';
 import {Button} from '@/shared/components/ui/button';
-import {Title} from '@/shared/components/shared';
+import {Title, ToggleGroup} from '@/shared/components/shared';
 
 interface Props {
     imageUrl: string;
@@ -24,6 +24,14 @@ export const ProductForm: React.FC<Props> = ({
                                                  className,
                                                  loading,
                                              }) => {
+
+    const properties = [
+        {name: 'test 1', value: 't1', disabled: false},
+        {name: 'test 2', value: 't2', disabled: false},
+        {name: 'test 3', value: 't3', disabled: false},
+        {name: 'test 4', value: 't4', disabled: true},
+    ];
+
     return (
         <div className={cn(className, 'flex flex-1')}>
             <div className="flex items-center justify-center flex-1 relative w-full">
@@ -37,9 +45,12 @@ export const ProductForm: React.FC<Props> = ({
             <div className="w-[490px] bg-[#f7f6f5] p-7">
                 <Title text={name} size="md" className="font-extrabold mb-1"/>
 
-                <p className="text-gray-400">
-                    {description}
-                </p>
+                {description && <p className="text-gray-400">{description}</p>}
+
+                <ToggleGroup
+                    value={'t1'}
+                    items={properties}
+                ></ToggleGroup>
 
                 <Button
                     // loading={loading}

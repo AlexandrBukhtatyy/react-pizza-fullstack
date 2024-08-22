@@ -12,11 +12,11 @@ type Variant = {
 interface Props {
     items: Variant[];
     onClick?: (value: Variant['value']) => void;
-    selectedValue?: Variant['value'];
+    value?: Variant['value'];
     className?: string;
 }
 
-export  const ToggleGroup: React.FC<Props> = ({items, onClick, selectedValue, className}) => {
+export  const ToggleGroup: React.FC<Props> = ({items, onClick, value, className}) => {
     return (
         <div className={cn(
             className,
@@ -30,11 +30,11 @@ export  const ToggleGroup: React.FC<Props> = ({items, onClick, selectedValue, cl
                         className={cn(
                             'flex items-center justify-center cursor-pointer h-[30px] p-5 flex-1 rounded-3xl transition-all duration-400 text-sm',
                             {
-                                'bg-white shadow': item.value === selectedValue,
+                                'bg-white shadow': item.value === value,
                                 'text-gray-500 opacity-50 pointer-events-none': item.disabled,
                             }
                         )}
-                    >{item.value}</button>
+                    >{item.name}</button>
                 ))
             }
         </div>
