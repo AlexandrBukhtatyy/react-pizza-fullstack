@@ -4,17 +4,19 @@ import {Button} from '@/shared/components/ui/button';
 import {ToggleGroup} from '@/shared/components/shared/toggle-group';
 import {PizzaSize, pizzaSizes, PizzaType, pizzaTypes} from '@/shared/constants/pizza';
 import React from 'react';
-import {Ingredient} from '@prisma/client';
+import {Ingredient, ProductItem} from '@prisma/client';
 import {Ingredients} from '@/shared/components/shared/ingredients';
+import {useSet} from 'react-use';
 
 interface Props {
     imageUrl: string;
     name: string;
     description?: string;
     ingredients?: Ingredient[];
+    items: ProductItem[];
     price?: number;
     loading?: boolean;
-    onSubmit?: VoidFunction;
+    onClickAddCart?: VoidFunction;
     className?: string;
 }
 
@@ -26,8 +28,9 @@ export const PizzaForm: React.FC<Props> = ({
                                                description,
                                                imageUrl,
                                                ingredients,
+                                               items,
                                                price,
-                                               onSubmit,
+                                               onClickAddCart,
                                                className,
                                                loading,
                                            }) => {
@@ -35,8 +38,16 @@ export const PizzaForm: React.FC<Props> = ({
     const [size, setSize] = React.useState<PizzaSize>(20);
     const [type, setType] = React.useState<PizzaType>(1);
 
+    const [selectedIngredients, {toggle: addIngredient}] = useSet(new Set<number>([]));
+
     const sizes = pizzaSizes.map(({name, value}) => ({name, value, disabled: false}));
     const types = pizzaTypes.map(({name, value}) => ({name, value, disabled: false}));
+
+    const pizzaPrice = items.find((item) => item.pizzaType === type && item.size === size)?.price;
+    const totalIngrediensPrice = ingredients
+        .filter((ingredient) => selectedIngredients.has(ingredient.id))
+        .reduce((acc, ingredient) => acc+ingredient.price, 0);
+    const totalPrice = pizzaPrice + totalIngrediensPrice;
 
     return (
         <div className={cn(className, 'flex flex-1')}>
@@ -47,6 +58,7 @@ export const PizzaForm: React.FC<Props> = ({
             <div className="w-[490px] bg-[#f7f6f5] p-7">
                 <Title text={name} size="md" className="font-extrabold mb-1"/>
                 {description && <p className="mb-4 text-gray-400">{description}</p>}
+
 
                 <ToggleGroup
                     className="mb-4"
@@ -70,6 +82,8 @@ export const PizzaForm: React.FC<Props> = ({
                                 imageUrl={ingredient.imageUrl}
                                 name={ingredient.name}
                                 price={ingredient.price}
+                                active={selectedIngredients.has(ingredient.id)}
+                                onClick={() => addIngredient(ingredient.id)}
                             ></Ingredients>
                         ))}
                     </div>
@@ -77,9 +91,9 @@ export const PizzaForm: React.FC<Props> = ({
 
                 <Button
                     // loading={loading}
-                    onClick={() => onSubmit?.()}
+                    onClick={() => onClickAddCart?.()}
                     className="h-[55px] px-10 text-base rounded-[18px] w-full mt-8">
-                    Добавить в корзину за {price} ₽
+                    Добавить в корзину за {totalPrice} ₽
                 </Button>
             </div>
         </div>
