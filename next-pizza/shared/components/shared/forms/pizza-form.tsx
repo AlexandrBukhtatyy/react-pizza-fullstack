@@ -11,7 +11,6 @@ import {useSet} from 'react-use';
 interface Props {
     imageUrl: string;
     name: string;
-    description?: string;
     ingredients?: Ingredient[];
     items: ProductItem[];
     price?: number;
@@ -25,7 +24,6 @@ interface Props {
  */
 export const PizzaForm: React.FC<Props> = ({
                                                name,
-                                               description,
                                                imageUrl,
                                                ingredients,
                                                items,
@@ -40,14 +38,33 @@ export const PizzaForm: React.FC<Props> = ({
 
     const [selectedIngredients, {toggle: addIngredient}] = useSet(new Set<number>([]));
 
+    const details = `${size} см`; // TODO: Обогатить дополнительной информацией
+
     const sizes = pizzaSizes.map(({name, value}) => ({name, value, disabled: false}));
     const types = pizzaTypes.map(({name, value}) => ({name, value, disabled: false}));
 
-    const pizzaPrice = items.find((item) => item.pizzaType === type && item.size === size)?.price;
+    const pizzaPrice = items.find((item) => item.pizzaType === type && item.size === size)?.price || 0;
     const totalIngrediensPrice = ingredients
         .filter((ingredient) => selectedIngredients.has(ingredient.id))
-        .reduce((acc, ingredient) => acc+ingredient.price, 0);
+        .reduce((acc, ingredient) => acc + ingredient.price, 0);
     const totalPrice = pizzaPrice + totalIngrediensPrice;
+
+    const handleClickAdd = () => {
+        onClickAddCart?.();
+        console.log({size, type, ingredients: selectedIngredients});
+    };
+
+    const availablePizzas = items
+        .filter((item) => item.pizzaType === type);
+
+    const availablePizzaSizes = pizzaSizes
+        .map(({name, value}) => ({
+            name,
+            value,
+            disabled: !availablePizzas.some((pizza) => Number(pizza.size) === Number(value))
+        }));
+
+    console.log('TEST', items, availablePizzas, availablePizzaSizes);
 
     return (
         <div className={cn(className, 'flex flex-1')}>
@@ -57,13 +74,13 @@ export const PizzaForm: React.FC<Props> = ({
 
             <div className="w-[490px] bg-[#f7f6f5] p-7">
                 <Title text={name} size="md" className="font-extrabold mb-1"/>
-                {description && <p className="mb-4 text-gray-400">{description}</p>}
+                {details && <p className="mb-4 text-gray-400">{details}</p>}
 
 
                 <ToggleGroup
                     className="mb-4"
                     value={String(size)}
-                    items={sizes}
+                    items={availablePizzaSizes}
                     onClick={value => setSize(Number(value) as PizzaSize)}
                 ></ToggleGroup>
 
@@ -91,7 +108,7 @@ export const PizzaForm: React.FC<Props> = ({
 
                 <Button
                     // loading={loading}
-                    onClick={() => onClickAddCart?.()}
+                    onClick={() => handleClickAdd}
                     className="h-[55px] px-10 text-base rounded-[18px] w-full mt-8">
                     Добавить в корзину за {totalPrice} ₽
                 </Button>
